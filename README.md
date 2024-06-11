@@ -3,11 +3,14 @@
 
 Parts list:
 
-1 x Mind Flex
-3 x AAA batteries for the headset
-1 x Arduino (any variety), with USB cable
-2 x 12" lengths of solid core hookup wire (around #22 or #24 gauge is best).
-A PC or Mac to monitor the serial data
+- 2 x Mind Flex
+- 6 x AAA batteries for the headset
+- 1 x Arduino (any variety), with USB cable
+- 2 x 12" lengths of solid core hookup wire (around #22 or #24 gauge is best).
+- A PC or Mac to monitor the serial data
+- Heat gun + Heat shrink tubing
+- Solder gun
+- 
 
 Software list:
 
