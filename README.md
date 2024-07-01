@@ -4,13 +4,18 @@
 Parts list:
 
 - 2 x Mind Flex
-- 6 x AAA batteries for the headset
-- 1 x Arduino (any variety), with USB cable
+- 6 x AAA batteries for the headsets
+- 1 x Raspberry Pi 3 (any variety with Bluetooth), with USB cable
+- 2 x [ESP32](https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654) boards
+- [Flexible LED strip](https://shop.pimoroni.com/products/flexible-rgbw-led-strip-neopixel-ws2812-sk6812-compatible?variant=30260032733267)
+
+
 - 2 x 12" lengths of solid core hookup wire (around #22 or #24 gauge is best).
-- A PC or Mac to monitor the serial data
 - Heat gun + Heat shrink tubing
 - Solder gun
-- 
+
+- Device (PC or Mac) to monitor the serial data and send to MQTT
+
 
 Software list:
 
