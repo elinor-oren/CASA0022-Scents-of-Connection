@@ -78,17 +78,45 @@ def wheel(pos):
     pos -= 170
     return (pos * 3, 0, 255 - pos * 3)
 
-def rainbow_cycle(wait):
+def rainbow_cycle(wait, duration=None):
     global rainbow_running
     with lock:
         rainbow_running = True
-        for j in range(255):
-            for i in range(22, 60):
-                pixel_index = (i * 256 // num_pixels) + j
-                pixels[i] = wheel(pixel_index & 255)
-            pixels.show()
-            time.sleep(wait)
-        rainbow_running = False
+        
+        # Wipe the meditation LEDs before starting the rainbow effect
+        for i in range(22, 60):
+            pixels[i] = (0, 0, 0, 0)
+        pixels.show()
+
+        start_time = time.time()
+        while True:
+            for j in range(255):
+                for i in range(22, 60):
+                    pixel_index = (i * 256 // num_pixels) + j
+                    pixels[i] = wheel(pixel_index & 255)
+                pixels.show()
+                time.sleep(wait)
+                
+                # Check if the specified duration has passed
+                if duration and (time.time() - start_time >= duration):
+                    rainbow_running = False
+                    return
+
+# def rainbow_cycle(wait, duration=None):
+#     global rainbow_running
+#     with lock:
+#         rainbow_running = True
+#         # Wipe the meditation LEDs before starting the rainbow effect
+#         for i in range(22, 60):
+#             pixels[i] = (0, 0, 0, 0)
+#         pixels.show()
+#         for j in range(255):
+#             for i in range(22, 60):
+#                 pixel_index = (i * 256 // num_pixels) + j
+#                 pixels[i] = wheel(pixel_index & 255)
+#             pixels.show()
+#             time.sleep(wait)
+#         rainbow_running = False
 
 # Gradient and glow effects
 def gradient_color(start_color, end_color, step, total_steps):
@@ -340,11 +368,25 @@ def check_very_high():
         print(f"Very high state achieved in {duration} seconds")
         log_data("Very High Time", duration)
         log_data("Rainbow Wheel", "Started")
-        rainbow_cycle(0.1)  # Trigger rainbow wheel effect
+
+
+        # Trigger rainbow wheel effect with GPIO17 on for 10 seconds
+        rainbow_cycle(0.1, duration=10)
+        
+        # Turn off GPIO17 and log the end of the rainbow wheel
+        GPIO.output(17, GPIO.LOW)
         log_data("Rainbow Wheel", "Ended")
-        pixels.fill((0, 0, 0, 0))  # Turn off all LEDs for 1 second after the rainbow effect
+        
+        pixels.fill((10, 10, 10, 0))  # Set pixels to baseline white
         pixels.show()
-        time.sleep(1)
+        print("Script terminating...")
+        log_data("Script", "Terminated")
+
+        # Clean up and terminate the script
+        GPIO.cleanup()
+        client.loop_stop()
+        client.disconnect()
+        exit(0)
     else:
         Timer(1, check_very_high).start()
 
@@ -388,7 +430,7 @@ def on_message(client, userdata, msg):
         print("Failed to parse CSV")
         return
 
-    if valid_packets_received >= 3 and not experiment_started:
+    if valid_packets_received > 4 and not experiment_started:
         experiment_started = True
         log_data("Experiment", "Started")
         blink_leds(1, 1)  # Signal that the experiment has started with a slow blink
