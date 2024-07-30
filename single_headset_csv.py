@@ -24,19 +24,16 @@ color_levels = {
     1: (0, 0, 20, 0),   # very dark blue
     2: (0, 0, 60, 0),   # dark blue
     3: (0, 3, 90, 0),   # medium blue
-    4: (0, 5, 120, 0), # light blue
-    5: (0, 8, 250, 0)  # white
+    4: (0, 5, 120, 0),  # light blue
+    5: (0, 8, 250, 0)   # white
 }
 
-# Define global variables for LED states
-current_state = [(0, 0, 0, 0)] * num_pixels  # Start with all LEDs off
-
-# Other variables
 yellowy_white = (255, 255, 100, 0)  # Yellowy white color
 tangerine = (255, 80, 0, 0)  # Tangerine orange color
 teal = (0, 128, 128, 0)  # Turquoisey blue color
 warm_yellow = (255, 150, 0, 0)  # Warm yellow color
 
+# Variables
 participant = input("Enter participant number: ")
 headset_data = None
 meditation_count = 0
@@ -46,12 +43,13 @@ valid_packets_received = 0  # Counter for received packets with signal strength 
 experiment_started = False  # Flag to indicate experiment start
 rainbow_running = False  # Flag to indicate the rainbow led effect
 lock = Lock()  # Lock to prevent interference between LEDs
+current_state = [(0, 0, 0, 0)] * num_pixels  # Store the current state of LEDs
 
 # CSV file setup
 csv_file = f'{participant}_single_data_{datetime.now().strftime("%d_%m_%Y_%H%M")}.csv'
 with open(csv_file, mode='w', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(["Timestamp", "Participant", "Headset", "Signal Strength", "Attention", "Meditation",
+    writer.writerow(["Timestamp", "Participant", "Headset", "Signal Strength", "Attention", "Meditation", 
                      "Delta", "Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma", "Very High Time", "Very High Duration"])
 
 def analyze_meditation(meditation):
@@ -68,6 +66,8 @@ def analyze_meditation(meditation):
 
 # Loop LED effects
 def wheel(pos):
+    # Input a value 0 to 255 to get a color value.
+    # The colors are a transition r - g - b - back to r.
     if pos < 0 or pos > 255:
         return (0, 0, 0)
     if pos < 85:
@@ -126,18 +126,14 @@ def fade_out_effect(start_led, end_led, steps=20):
         pixels.show()
         time.sleep(0.01)
 
-def set_leds(meditation):
-    with lock:
-        if rainbow_running:
-            return
-
-    # Determine the color based on meditation value
+def apply_gradient_effect(meditation):
+    global current_state
     level = analyze_meditation(meditation)
     start_color = color_levels[level]
     end_color = (255, 255, 255, 0)  # Transition to white
 
-    # Prepare the new state
-    new_state = [(10, 10, 10, 0)] * num_pixels  # Initialize with low white light
+    # Initialize new state with low white light
+    new_state = [(10, 10, 10, 0)] * num_pixels
 
     if meditation <= 25:
         for i in range(22, 26):
@@ -316,7 +312,7 @@ def on_message(client, userdata, msg):
 
     if headset_data and experiment_started:
         meditation = headset_data["Meditation"]
-        set_leds(meditation)
+        apply_gradient_effect(meditation)
         if meditation >= very_high_threshold:
             meditation_count += 1
             if meditation_count == 1:
