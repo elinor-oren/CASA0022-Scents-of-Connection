@@ -125,9 +125,10 @@ def fade_out_effect(start_led, end_led, steps=20):
                 pixels[i] = color
         pixels.show()
         time.sleep(0.01)
-
 def apply_gradient_effect(meditation):
     global current_state
+    if rainbow_running:
+        return  # Do not perform transition if rainbow cycle is running
     level = analyze_meditation(meditation)
     start_color = color_levels[level]
     end_color = (255, 255, 255, 0)  # Transition to white
@@ -135,60 +136,119 @@ def apply_gradient_effect(meditation):
     # Initialize new state with low white light
     new_state = [(10, 10, 10, 0)] * (num_pixels - 22)
     for i in range(22, 60):
-        new_state[i-22] = (10, 10, 10, 0)  # Apply low white light baseline
-
-    # # Initialize new state with low white light
-    # new_state = current_state[:]  # Start with the current state
-    # for i in range(22, 61):
-    #     new_state[i-22] = (10, 10, 10, 0)  # Apply low white light baseline
+        new_state[i - 22] = (10, 10, 10, 0)  # Apply low white light baseline
 
     if meditation <= 25:
         for i in range(22, 26):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(57, 60):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
     elif meditation <= 40:
         for i in range(22, 26):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(57, 60):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(27, 30):
-            new_state[i] = gradient_color(start_color, end_color, i - 27, 3)
+            new_state[i - 22] = gradient_color(start_color, end_color, i - 27, 3)
         for i in range(56, 53, -1):
-            new_state[i] = gradient_color(start_color, end_color, 56 - i, 3)
+            new_state[i - 22] = gradient_color(start_color, end_color, 56 - i, 3)
     elif meditation <= 60:
         for i in range(22, 30):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(53, 60):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(31, 34):
-            new_state[i] = gradient_color(start_color, end_color, i - 31, 3)
+            new_state[i - 22] = gradient_color(start_color, end_color, i - 31, 3)
         for i in range(52, 49, -1):
-            new_state[i] = gradient_color(start_color, end_color, 52 - i, 3)
+            new_state[i - 22] = gradient_color(start_color, end_color, 52 - i, 3)
     elif meditation <= 80:
         for i in range(22, 34):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(49, 60):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(35, 38):
-            new_state[i] = gradient_color(start_color, end_color, i - 35, 3)
+            new_state[i - 22] = gradient_color(start_color, end_color, i - 35, 3)
         for i in range(48, 45, -1):
-            new_state[i] = gradient_color(start_color, end_color, 48 - i, 3)
+            new_state[i - 22] = gradient_color(start_color, end_color, 48 - i, 3)
     else:
         for i in range(22, 38):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(45, 60):
-            new_state[i] = start_color
+            new_state[i - 22] = start_color
         for i in range(39, 41):
-            new_state[i] = gradient_color(start_color, end_color, i - 39, 2)
+            new_state[i - 22] = gradient_color(start_color, end_color, i - 39, 2)
         for i in range(44, 42, -1):
-            new_state[i] = gradient_color(start_color, end_color, 44 - i, 2)
+            new_state[i - 22] = gradient_color(start_color, end_color, 44 - i, 2)
 
     # Apply smooth transition to the new state
     smooth_transition(new_state)
 
+## Removed due to index error
+# def apply_gradient_effect(meditation):
+#     global current_state
+#     level = analyze_meditation(meditation)
+#     start_color = color_levels[level]
+#     end_color = (255, 255, 255, 0)  # Transition to white
+
+#     # Initialize new state with low white light
+#     new_state = [(10, 10, 10, 0)] * (num_pixels - 22)
+#     for i in range(22, 60):
+#         new_state[i-22] = (10, 10, 10, 0)  # Apply low white light baseline
+
+#     # # Initialize new state with low white light
+#     # new_state = current_state[:]  # Start with the current state
+#     # for i in range(22, 61):
+#     #     new_state[i-22] = (10, 10, 10, 0)  # Apply low white light baseline
+
+#     if meditation <= 25:
+#         for i in range(22, 26):
+#             new_state[i] = start_color
+#         for i in range(57, 60):
+#             new_state[i] = start_color
+#     elif meditation <= 40:
+#         for i in range(22, 26):
+#             new_state[i] = start_color
+#         for i in range(57, 60):
+#             new_state[i] = start_color
+#         for i in range(27, 30):
+#             new_state[i] = gradient_color(start_color, end_color, i - 27, 3)
+#         for i in range(56, 53, -1):
+#             new_state[i] = gradient_color(start_color, end_color, 56 - i, 3)
+#     elif meditation <= 60:
+#         for i in range(22, 30):
+#             new_state[i] = start_color
+#         for i in range(53, 60):
+#             new_state[i] = start_color
+#         for i in range(31, 34):
+#             new_state[i] = gradient_color(start_color, end_color, i - 31, 3)
+#         for i in range(52, 49, -1):
+#             new_state[i] = gradient_color(start_color, end_color, 52 - i, 3)
+#     elif meditation <= 80:
+#         for i in range(22, 34):
+#             new_state[i] = start_color
+#         for i in range(49, 60):
+#             new_state[i] = start_color
+#         for i in range(35, 38):
+#             new_state[i] = gradient_color(start_color, end_color, i - 35, 3)
+#         for i in range(48, 45, -1):
+#             new_state[i] = gradient_color(start_color, end_color, 48 - i, 3)
+#     else:
+#         for i in range(22, 38):
+#             new_state[i] = start_color
+#         for i in range(45, 60):
+#             new_state[i] = start_color
+#         for i in range(39, 41):
+#             new_state[i] = gradient_color(start_color, end_color, i - 39, 2)
+#         for i in range(44, 42, -1):
+#             new_state[i] = gradient_color(start_color, end_color, 44 - i, 2)
+
+    # # Apply smooth transition to the new state
+    # smooth_transition(new_state)
+
 def smooth_transition(new_colors, duration=0.5, interval=0.05):
     global current_state
+    if rainbow_running:
+        return  # Do not perform transition if rainbow cycle is running
     steps = int(duration / interval)
     for step in range(steps):
         for i in range(22, 61):
@@ -363,7 +423,7 @@ client.loop_start()
 # Keep the script running
 try:
     while True:
-        if valid_packets_received < 3:
+        if valid_packets_received < 4:
             chaser_effect()
         elif experiment_started:
             exaggerated_breathing_effect(1, 7)  # Slow breathing effect after the experiment has started
