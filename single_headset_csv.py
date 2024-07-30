@@ -43,7 +43,7 @@ valid_packets_received = 0  # Counter for received packets with signal strength 
 experiment_started = False  # Flag to indicate experiment start
 rainbow_running = False  # Flag to indicate the rainbow led effect
 lock = Lock()  # Lock to prevent interference between LEDs
-current_state = [(0, 0, 0, 0)] * num_pixels  # Store the current state of LEDs
+current_state = [(0, 0, 0, 0)] * (num_pixels - 22)  # Store the current state of LEDs
 
 # CSV file setup
 csv_file = f'{participant}_single_data_{datetime.now().strftime("%d_%m_%Y_%H%M")}.csv'
@@ -83,7 +83,7 @@ def rainbow_cycle(wait):
     with lock:
         rainbow_running = True
         for j in range(255):
-            for i in range(22, 59):
+            for i in range(22, 60):
                 pixel_index = (i * 256 // num_pixels) + j
                 pixels[i] = wheel(pixel_index & 255)
             pixels.show()
@@ -106,7 +106,7 @@ def gradient_effect(start_led, end_led, start_color, end_color):
             index = start_led + step
         else:
             index = start_led - step
-        if 0 <= index < num_pixels:  # Ensure we stay within range
+        if 22 <= index < num_pixels:  # Ensure we stay within range
             pixels[index] = color
     pixels.show()
 
@@ -133,9 +133,14 @@ def apply_gradient_effect(meditation):
     end_color = (255, 255, 255, 0)  # Transition to white
 
     # Initialize new state with low white light
-    new_state = current_state[:]  # Start with the current state
-    for i in range(22, 61):
-        new_state[i] = (10, 10, 10, 0)  # Apply low white light baseline
+    new_state = [(10, 10, 10, 0)] * (num_pixels - 22)
+    for i in range(22, 60):
+        new_state[i-22] = (10, 10, 10, 0)  # Apply low white light baseline
+
+    # # Initialize new state with low white light
+    # new_state = current_state[:]  # Start with the current state
+    # for i in range(22, 61):
+    #     new_state[i-22] = (10, 10, 10, 0)  # Apply low white light baseline
 
     if meditation <= 25:
         for i in range(22, 26):
@@ -186,6 +191,24 @@ def smooth_transition(new_colors, duration=0.5, interval=0.05):
     global current_state
     steps = int(duration / interval)
     for step in range(steps):
+        for i in range(22, 61):
+            index = i - 22
+            if index < len(current_state):
+                # Interpolate between current color and target color
+                current_color = current_state[index]
+                target_color = new_colors[index]
+                intermediate_color = gradient_color(current_color, target_color, step, steps - 1)
+                pixels[i] = intermediate_color
+        pixels.show()
+        time.sleep(interval)
+    # Update the current state for LEDs 22-60
+    current_state = new_colors
+
+''' removed because I worried that smooth transition was interfering with the breathing effect
+def smooth_transition(new_colors, duration=0.5, interval=0.05):
+    global current_state
+    steps = int(duration / interval)
+    for step in range(steps):
         for i in range(len(new_colors)):
             if i < num_pixels:
                 # Interpolate between current color and target color
@@ -197,6 +220,7 @@ def smooth_transition(new_colors, duration=0.5, interval=0.05):
         time.sleep(interval)
     # Update the current state
     current_state = new_colors
+'''
 
 # Base LED effects
 def chaser_effect():
