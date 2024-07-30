@@ -133,7 +133,9 @@ def apply_gradient_effect(meditation):
     end_color = (255, 255, 255, 0)  # Transition to white
 
     # Initialize new state with low white light
-    new_state = [(10, 10, 10, 0)] * num_pixels
+    new_state = current_state[:]  # Start with the current state
+    for i in range(22, 61):
+        new_state[i] = (10, 10, 10, 0)  # Apply low white light baseline
 
     if meditation <= 25:
         for i in range(22, 26):
