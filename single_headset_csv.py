@@ -292,7 +292,7 @@ def smooth_transition(new_colors, duration=0.5, interval=0.05):
     # Update the current state for LEDs 22-60
     current_state = new_colors
 
-''' removed because I worried that smooth transition was interfering with the breathing effect
+''' removed because smooth transition was interfering with the breathing effect
 def smooth_transition(new_colors, duration=0.5, interval=0.05):
     global current_state
     steps = int(duration / interval)
