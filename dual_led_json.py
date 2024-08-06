@@ -19,14 +19,10 @@ pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=1.0, auto_write=Fal
 
 # Define LED ranges for each headset
 HEADSET1_LEDS = range(22, 42)  # LEDs 22-41 for headset 1
-HEADSET2_LEDS = range(42, 60)  # LEDs 42-60 for headset 2
+HEADSET2_LEDS = range(42, 61)  # LEDs 42-60 for headset 2
 
 # Define colors 
-yellowy_white = (255, 255, 100, 0)  # Yellowy white color
-tangerine = (255, 80, 0, 0)  # Tangerine orange color
-teal = (0, 128, 128, 0)  # Turquoisey blue color
-warm_yellow = (255, 150, 0, 0)  # Warm yellow color
-
+teal = (0, 128, 128, 0)  # Turquoisey blue color for the chaser effect
 color_levels_teal = {
     1: (0, 20, 20, 0),   # very dark teal
     2: (0, 60, 60, 0),   # dark teal

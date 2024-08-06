@@ -53,7 +53,8 @@ very_high_threshold = 81
 experiment_started = False
 rainbow_running = False
 lock = Lock()
-current_state = [(0, 0, 0, 0)] * (num_pixels - 22)  # Store the current state of LEDs
+current_state_headset1 = [(0, 0, 0, 0)] * len(HEADSET1_LEDS)
+current_state_headset2 = [(0, 0, 0, 0)] * len(HEADSET2_LEDS)
 
 # CSV file setup
 csv_files = {participant: f'{participant}_dual_data_{datetime.now().strftime("%d_%m_%Y_%H%M")}.csv' for participant in participants}
@@ -82,16 +83,43 @@ def gradient_color(start_color, end_color, step, total_steps):
         for i in range(4)
     )
 
-def apply_gradient_effect_headset1(meditation):
-    if rainbow_running:
-        return  # Do not perform transition if rainbow cycle is running
+def smooth_transition(new_colors, led_range, current_state, duration=0.5, interval=0.05):
+    steps = int(duration / interval)
+    for step in range(steps):
+        for i, led_index in enumerate(led_range):
+            if i < len(current_state) and i < len(new_colors):
+                current_color = current_state[i]
+                target_color = new_colors[i]
+                intermediate_color = gradient_color(current_color, target_color, step, steps - 1)
+                pixels[led_index] = intermediate_color
+        pixels.show()
+        time.sleep(interval)
+    return new_colors
+
+def update_leds():
+    global current_state_headset1, current_state_headset2
+    if headset_data and experiment_started:
+        new_state1 = current_state_headset1[:]
+        new_state2 = current_state_headset2[:]
+        
+        for i, participant in enumerate(participants):
+            headset = headset_data.get(participant)
+            if headset:
+                meditation = headset.get("Meditation", 0)
+                if i == 0:
+                    new_state1 = calculate_gradient_effect_headset1(meditation)
+                elif i == 1:
+                    new_state2 = calculate_gradient_effect_headset2(meditation)
+        
+        current_state_headset1 = smooth_transition(new_state1, HEADSET1_LEDS, current_state_headset1)
+        current_state_headset2 = smooth_transition(new_state2, HEADSET2_LEDS, current_state_headset2)
+
+def calculate_gradient_effect_headset1(meditation):
     level = analyze_meditation(meditation)
     start_color = color_levels_teal[level]
     end_color = (255, 255, 255, 0)  # Transition to white
 
     new_state1 = [(10, 10, 10, 0)] * len(HEADSET1_LEDS)
-    for i in range(len(HEADSET1_LEDS)):
-        new_state1[i] = (10, 10, 10, 0)  # Apply low white light baseline
 
     if meditation <= 25:
         for i in range(22, 26):
@@ -114,21 +142,17 @@ def apply_gradient_effect_headset1(meditation):
     else:
         for i in range(22, 39):
             new_state1[i - 22] = start_color
-        for i in range(39, 42):
+        for i in range(39, 41):
             new_state1[i - 22] = gradient_color(start_color, end_color, i - 39, 3)
 
-    smooth_transition(new_state1, HEADSET1_LEDS)
+    return new_state1
 
-def apply_gradient_effect_headset2(meditation):
-    if rainbow_running:
-        return  # Do not perform transition if rainbow cycle is running
+def calculate_gradient_effect_headset2(meditation):
     level = analyze_meditation(meditation)
     start_color = color_levels_tangerine[level]
     end_color = (255, 255, 255, 0)  # Transition to white
 
     new_state2 = [(10, 10, 10, 0)] * len(HEADSET2_LEDS)
-    for i in range(len(HEADSET2_LEDS)):
-        new_state2[i] = (10, 10, 10, 0)  # Apply low white light baseline
 
     if meditation <= 25:
         for i in range(58, 60):
@@ -154,23 +178,7 @@ def apply_gradient_effect_headset2(meditation):
         for i in range(44, 42, -1):
             new_state2[i - 42] = gradient_color(start_color, end_color, 44 - i, 2)
 
-    smooth_transition(new_state2, HEADSET2_LEDS)
-
-def smooth_transition(new_colors, led_range, duration=0.5, interval=0.05):
-    global current_state
-    steps = int(duration / interval)
-    for step in range(steps):
-        for i in led_range:
-            index = i - led_range.start
-            if index < len(current_state):
-                current_color = current_state[index]
-                target_color = new_colors[index]
-                intermediate_color = gradient_color(current_color, target_color, step, steps - 1)
-                pixels[i] = intermediate_color
-        pixels.show()
-        time.sleep(interval)
-    # Update the current state for the specific range
-    current_state[led_range.start - 22:led_range.start - 22 + len(new_colors)] = new_colors
+    return new_state2
 
 # Modified to ensure the rainbow only goes off when both the participants have reached the threshold
 def check_very_high(participant):
@@ -267,9 +275,9 @@ def on_message(client, userdata, msg):
             if headset:
                 meditation = headset.get("Meditation", 0)
                 if i == 0:
-                    apply_gradient_effect_headset1(meditation)
+                    calculate_gradient_effect_headset1(meditation)
                 elif i == 1:
-                    apply_gradient_effect_headset2(meditation)
+                    calculate_gradient_effect_headset2(meditation)
                 if meditation >= very_high_threshold:
                     meditation_count[participant] += 1
                     if meditation_count[participant] == 1:
@@ -358,6 +366,7 @@ try:
         if not experiment_started:
             chaser_effect()
         elif experiment_started:
+            update_leds()
             exaggerated_breathing_effect(1, 7)  # Slow breathing effect after the experiment has started
         time.sleep(1)
 except KeyboardInterrupt:

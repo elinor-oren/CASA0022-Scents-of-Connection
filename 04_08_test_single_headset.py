@@ -2,12 +2,14 @@ import paho.mqtt.client as mqtt
 import time
 import RPi.GPIO as GPIO
 import csv
-from threading import Timer
+from threading import Timer, Lock
 from datetime import datetime
 import board
 import neopixel
 import math
-from threading import Lock  # Import the Lock class
+import signal
+import sys
+import threading
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
@@ -52,6 +54,23 @@ with open(csv_file, mode='w', newline='') as file:
     writer.writerow(["Timestamp", "Participant", "Headset", "Signal Strength", "Attention", "Meditation", 
                      "Delta", "Theta", "Low Alpha", "High Alpha", "Low Beta", "High Beta", "Low Gamma", "High Gamma", "Very High Time", "Very High Duration"])
 
+def cleanup():
+    """Cleanup function to release resources."""
+    GPIO.cleanup()
+    client.loop_stop()
+    client.disconnect()
+    print("Cleaned up resources.")
+
+def signal_handler(sig, frame):
+    """Handle termination signals gracefully."""
+    print("Signal received, stopping...")
+    cleanup()
+    sys.exit(0)
+
+# Register signal handlers for graceful shutdown
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
 def analyze_meditation(meditation):
     if meditation <= 25:
         return 1  # very low
@@ -78,45 +97,24 @@ def wheel(pos):
     pos -= 170
     return (pos * 3, 0, 255 - pos * 3)
 
-def rainbow_cycle(wait, duration=None):
+def rainbow_cycle(wait, duration=10):
     global rainbow_running
     with lock:
         rainbow_running = True
-        
         # Wipe the meditation LEDs before starting the rainbow effect
         for i in range(22, 60):
             pixels[i] = (0, 0, 0, 0)
         pixels.show()
 
         start_time = time.time()
-        while True:
+        while time.time() - start_time < duration:
             for j in range(255):
                 for i in range(22, 60):
                     pixel_index = (i * 256 // num_pixels) + j
                     pixels[i] = wheel(pixel_index & 255)
                 pixels.show()
                 time.sleep(wait)
-                
-                # Check if the specified duration has passed
-                if duration and (time.time() - start_time >= duration):
-                    rainbow_running = False
-                    return
-
-# def rainbow_cycle(wait, duration=None):
-#     global rainbow_running
-#     with lock:
-#         rainbow_running = True
-#         # Wipe the meditation LEDs before starting the rainbow effect
-#         for i in range(22, 60):
-#             pixels[i] = (0, 0, 0, 0)
-#         pixels.show()
-#         for j in range(255):
-#             for i in range(22, 60):
-#                 pixel_index = (i * 256 // num_pixels) + j
-#                 pixels[i] = wheel(pixel_index & 255)
-#             pixels.show()
-#             time.sleep(wait)
-#         rainbow_running = False
+        rainbow_running = False
 
 # Gradient and glow effects
 def gradient_color(start_color, end_color, step, total_steps):
@@ -138,21 +136,6 @@ def gradient_effect(start_led, end_led, start_color, end_color):
             pixels[index] = color
     pixels.show()
 
-# def fixed_low_glow(start, end, color):
-#     for i in range(start, min(end + 1, num_pixels)):
-#         pixels[i] = color
-#     pixels.show()
-
-# def fade_out_effect(start_led, end_led, steps=20):
-#     """Fade out the LEDs between start_led and end_led."""
-#     for step in range(steps):
-#         for i in range(start_led, end_led + 1):
-#             if 0 <= i < num_pixels:  # Ensure we stay within range
-#                 current_color = pixels[i]
-#                 color = gradient_color(current_color, (0, 0, 0, 0), step, steps - 1)
-#                 pixels[i] = color
-#         pixels.show()
-#         time.sleep(0.01)
 def apply_gradient_effect(meditation):
     global current_state
     if rainbow_running:
@@ -289,9 +272,8 @@ def check_very_high():
         log_data("Very High Time", duration)
         log_data("Rainbow Wheel", "Started")
 
-
         # Trigger rainbow wheel effect with GPIO17 on for 10 seconds
-        rainbow_cycle(0.1, duration=10)
+        rainbow_cycle(0.1, duration=5)
         
         # Turn off GPIO17 and log the end of the rainbow wheel
         GPIO.output(17, GPIO.LOW)
@@ -301,12 +283,6 @@ def check_very_high():
         pixels.show()
         print("Script terminating...")
         log_data("Script", "Terminated")
-
-        # # Clean up and terminate the script
-        # GPIO.cleanup()
-        # client.loop_stop()
-        # client.disconnect()
-        # exit(0)
     else:
         Timer(1, check_very_high).start()
 
@@ -353,7 +329,7 @@ def on_message(client, userdata, msg):
     if valid_packets_received > 4 and not experiment_started:
         experiment_started = True
         log_data("Experiment", "Started")
-        # blink_leds(1, 1)  # Signal that the experiment has started with a slow blink
+        blink_leds(1, 1)  # Signal that the experiment has started with a slow blink
         exaggerated_breathing_effect(1, 7)  # Maintain a breathing effect once the experiment has started
         pixels.fill((0, 0, 0, 0))
         pixels.show()
@@ -391,9 +367,5 @@ try:
             exaggerated_breathing_effect(1, 7)  # Slow breathing effect after the experiment has started
         time.sleep(1)
 except KeyboardInterrupt:
-    pixels.fill((0, 0, 0, 0))
-    pixels.show()
-    
-    GPIO.cleanup()
-    client.loop_stop()
-    client.disconnect()
+    cleanup()
+    sys.exit(0)
