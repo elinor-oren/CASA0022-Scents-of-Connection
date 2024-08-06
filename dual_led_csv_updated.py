@@ -172,17 +172,17 @@ def check_very_high(participant):
         duration = time.time() - start_time[participant]
         print(f"Very high state achieved for all participants in {duration} seconds")
         log_data(participant, "Very High Time", duration)
-        log_data("Rainbow Wheel", "Started")
+        log_data(participant, "Rainbow Wheel", "Started")
 
         rainbow_cycle(0.1, duration=10)
 
         GPIO.output(17, GPIO.LOW)
-        log_data("Rainbow Wheel", "Ended")
+        log_data(participant, "Rainbow Wheel", "Ended")
 
         pixels.fill((10, 10, 10, 0))
         pixels.show()
         print("Script terminating...")
-        log_data("Script", "Terminated")
+        log_data(participant, "Script", "Terminated")
 
         GPIO.cleanup()
         client.loop_stop()
