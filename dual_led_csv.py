@@ -53,7 +53,8 @@ very_high_threshold = 81
 experiment_started = False
 rainbow_running = False
 lock = Lock()
-current_state = [(0, 0, 0, 0)] * (num_pixels - 22)  # Store the current state of LEDs
+current_state_headset1 = [(0, 0, 0, 0)] * len(HEADSET1_LEDS)
+current_state_headset2 = [(0, 0, 0, 0)] * len(HEADSET2_LEDS)
 
 # CSV file setup
 csv_files = {participant: f'{participant}_dual_data_{datetime.now().strftime("%d_%m_%Y_%H%M")}.csv' for participant in participants}
@@ -83,6 +84,7 @@ def gradient_color(start_color, end_color, step, total_steps):
     )
 
 def apply_gradient_effect_headset1(meditation):
+    global current_state_headset1
     if rainbow_running:
         return  # Do not perform transition if rainbow cycle is running
     level = analyze_meditation(meditation)
@@ -114,12 +116,15 @@ def apply_gradient_effect_headset1(meditation):
     else:
         for i in range(22, 39):
             new_state1[i - 22] = start_color
-        for i in range(39, 42):
+        for i in range(39, 41):
             new_state1[i - 22] = gradient_color(start_color, end_color, i - 39, 3)
 
-    smooth_transition(new_state1, HEADSET1_LEDS)
+#    smooth_transition(new_state1, HEADSET1_LEDS)
+    current_state_headset1 = smooth_transition(new_state1, HEADSET1_LEDS, current_state_headset1)
+
 
 def apply_gradient_effect_headset2(meditation):
+    global current_state_headset2
     if rainbow_running:
         return  # Do not perform transition if rainbow cycle is running
     level = analyze_meditation(meditation)
@@ -154,23 +159,23 @@ def apply_gradient_effect_headset2(meditation):
         for i in range(44, 42, -1):
             new_state2[i - 42] = gradient_color(start_color, end_color, 44 - i, 2)
 
-    smooth_transition(new_state2, HEADSET2_LEDS)
+#    smooth_transition(new_state2, HEADSET2_LEDS)
+    current_state_headset2 = smooth_transition(new_state2, HEADSET2_LEDS, current_state_headset2)
 
-def smooth_transition(new_colors, led_range, duration=0.5, interval=0.05):
-    global current_state
+
+def smooth_transition(new_colors, led_range, current_state, duration=0.5, interval=0.05):
     steps = int(duration / interval)
     for step in range(steps):
-        for i in led_range:
-            index = i - led_range.start
-            if index < len(current_state):
-                current_color = current_state[index]
-                target_color = new_colors[index]
+        for i, led_index in enumerate(led_range):
+            if i < len(current_state) and i < len(new_colors):
+                current_color = current_state[i]
+                target_color = new_colors[i]
                 intermediate_color = gradient_color(current_color, target_color, step, steps - 1)
-                pixels[i] = intermediate_color
+                pixels[led_index] = intermediate_color
         pixels.show()
         time.sleep(interval)
-    # Update the current state for the specific range
-    current_state[led_range.start - 22:led_range.start - 22 + len(new_colors)] = new_colors
+    # Return the new state
+    return new_colors
 
 # Modified to ensure the rainbow only goes off when both the participants have reached the threshold
 def check_very_high(participant):

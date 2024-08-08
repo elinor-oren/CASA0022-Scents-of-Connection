@@ -50,7 +50,7 @@ void setup() {
 
         if (client.connect(clientId.c_str(), SECRET_MQTTUSER, SECRET_MQTTPASS)) {
             Serial.println("MQTT broker connected");
-            client.subscribe("student/ucbvren/headsets/headset1");
+            client.subscribe("student/ucbvren/headsets/headset2");
         } else {
             Serial.print("failed with state ");
             Serial.print(client.state());
@@ -64,7 +64,8 @@ void loop() {
      // The .readCSV() function returns a string (well, char*) listing the most recent brain data, in the following format:
     // "signal strength, attention, meditation, delta, theta, low alpha, high alpha, low beta, high beta, low gamma, high gamma"
     int signalStrength = 0;  // Signal strength
-    int meditation = random(20, 100); // Random meditation level between 20 and 100
+    //int meditation = 60;
+    int meditation = random(80, 100); // Random meditation level between 20 and 100
     String brainData = String(signalStrength) + ",0," + String(meditation) + ",0,0,0,0,0,0,0,0";
     
     Serial.println(brainData);
@@ -74,7 +75,7 @@ void loop() {
     brainData.toCharArray(msg, brainData.length() + 1);
     
     // Publish the fake data to the MQTT topic
-    client.publish("student/ucbvren/headsets/headset1", msg);
+    client.publish("student/ucbvren/headsets/headset2", msg);
     delay(1000); // Replicate the headset data transmission rate
 
 
@@ -98,7 +99,7 @@ void reconnect() {
         if (client.connect(clientId.c_str(), SECRET_MQTTUSER, SECRET_MQTTPASS)) {
             Serial.println("connected");
             // Subscribe to the topic
-            client.subscribe("student/ucbvren/headsets/headset1");
+            client.subscribe("student/ucbvren/headsets/headset2");
         } else {
             Serial.print("failed, rc=");
             Serial.print(client.state());

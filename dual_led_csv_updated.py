@@ -167,24 +167,25 @@ def calculate_gradient_effect_headset2(meditation):
 
 def check_very_high(participant):
     global meditation_count
-    if all(count >= 5 for count in meditation_count.values()):
+    if all(count >= 3 for count in meditation_count.values()):
         GPIO.output(17, GPIO.HIGH)
         duration = time.time() - start_time[participant]
         print(f"Very high state achieved for all participants in {duration} seconds")
         log_data(participant, "Very High Time", duration)
-        log_data(participant, "Rainbow Wheel", "Started")
+        log_data(participant,"Rainbow Wheel", "Started")
 
         rainbow_cycle(0.1, duration=10)
 
         GPIO.output(17, GPIO.LOW)
-        log_data(participant, "Rainbow Wheel", "Ended")
-
+        log_data(participant,"Rainbow Wheel", "Ended")
         pixels.fill((10, 10, 10, 0))
         pixels.show()
         print("Script terminating...")
-        log_data(participant, "Script", "Terminated")
 
-        GPIO.cleanup()
+        for p in participants:
+            log_data(p, "Script", "Terminated")
+#       log_data(participant,"Script", "Terminated")
+
         client.loop_stop()
         client.disconnect()
         exit(0)
@@ -331,6 +332,19 @@ try:
 except KeyboardInterrupt:
     pixels.fill((0, 0, 0, 0))
     pixels.show()
-    GPIO.cleanup()
+
     client.loop_stop()
     client.disconnect()
+
+
+
+
+
+
+
+
+
+
+
+
+
