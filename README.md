@@ -31,8 +31,7 @@ Optional (required for the visualizer): controlP5 Processing GUI Library (downlo
 ![IMG_8371](https://github.com/user-attachments/assets/beddaf97-7282-4afb-b4e8-a6c367a4bd16)
 
 
-PCB is attached 
-[ELINOR.pdf](https://github.com/user-attachments/files/16426819/ELINOR.pdf)
+<img width="998" alt="rhino mock-up" src="https://github.com/user-attachments/assets/76588905-08d9-483c-a3fc-3ec6f3cebd6f">
 [ELINOR4 (1).pdf](https://github.com/user-attachments/files/16426838/ELINOR4.1.pdf)
 
 
