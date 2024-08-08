@@ -32,8 +32,6 @@ Optional (required for the visualizer): controlP5 Processing GUI Library (downlo
 
 
 <img width="998" alt="rhino mock-up" src="https://github.com/user-attachments/assets/76588905-08d9-483c-a3fc-3ec6f3cebd6f">
-[ELINOR4 (1).pdf](https://github.com/user-attachments/files/16426838/ELINOR4.1.pdf)
-
 
 ### Components Needed
 - Raspberry Pi 3
