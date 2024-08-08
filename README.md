@@ -11,8 +11,6 @@ Parts list:
 - [Flexible LED strip](https://shop.pimoroni.com/products/flexible-rgbw-led-strip-neopixel-ws2812-sk6812-compatible?variant=30260032733267)
 - [Ultrasonic Mist Maker](https://www.amazon.co.uk/dp/B0CY2FSGDD?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - [MOSFET](https://cdn.sparkfun.com/datasheets/Components/General/FQP30N06L.pdf)
-- 
-
 
 - 2 x 12" lengths of solid core hookup wire (around #22 or #24 gauge is best).
 - Heat gun + Heat shrink tubing
@@ -30,13 +28,22 @@ Optional (required for the visualizer): controlP5 Processing GUI Library (downlo
 [Hardware Tutorial](https://frontiernerds.com/brain-hack)
 
 ## Pinout Diagram + Schematic 
+![IMG_8371](https://github.com/user-attachments/assets/beddaf97-7282-4afb-b4e8-a6c367a4bd16)
+
+
+PCB is attached 
+[ELINOR.pdf](https://github.com/user-attachments/files/16426819/ELINOR.pdf)
+[ELINOR4 (1).pdf](https://github.com/user-attachments/files/16426838/ELINOR4.1.pdf)
+
+
 ### Components Needed
 - Raspberry Pi 3
 - N-channel MOSFET (e.g., IRLZ44N, IRF540)
 - Piezoelectric Ultrasonic Disk
-- 10K ohm Resistor 
+- 1K ohm Resistor 
 - Power Supply (matching the voltage requirement of the piezoelectric disk)
 - Breadboard and Wires
+- The diffuser files; this is meant to fit to a 50ml
 
 I extended the wires on the Ultrasonic Atomizer, and I connected to the power pins. 
 The 10k ohm resistor is connected between the gate of the MOSFET and ground and acts as a pull-down resistor. It ensures that the MOSFET gate is pulled to a known low state (0V) when the digital pin is not actively driving it. 
@@ -46,10 +53,10 @@ Test using the script. Delays must be at least 2000 seconds
 Connect the on/off pins of the button and test on an arduino 
 
 
-
-
-
 ## Setting up the Raspberry Pi 
-Follow [this](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html) tutorial 
+Follow [this](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html) tutorial
+Use this neopixel test script 
 
+## Connecting the headset
+Update your information and test the MQTT connection from this file. 
 
