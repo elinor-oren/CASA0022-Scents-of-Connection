@@ -244,31 +244,48 @@ def rainbow_cycle(wait):
         pixels.show()
         time.sleep(wait)
 
-# Test the LED functions
-def test_led_functions():
-    print("Testing Single LED effects...")
-    for meditation in [20, 35, 55, 75, 85]:
-        print(f"Testing Single LED effect with meditation level: {meditation}")
-        apply_gradient_effect(meditation)
-        time.sleep(2)
+def gpio_sequence():
+    for _ in range(3):
+        GPIO.output(17, GPIO.HIGH)
+        print("GPIO17 is ON")
+        time.sleep(8)
+        GPIO.output(17, GPIO.LOW)
+        print("GPIO17 is OFF")
+        time.sleep(5)
 
-    print("\nTesting Dual LED effects...")
-    for meditation in [20, 35, 55, 75, 85]:
-        print(f"Testing Dual LED effects with meditation level: {meditation}")
-        apply_gradient_effect_headset1(meditation)
-        apply_gradient_effect_headset2(meditation)
-        time.sleep(2)
-
-    print("\nTesting Rainbow Wheel effect...")
-    for _ in range(2):  # Run rainbow cycle twice
-        rainbow_cycle(0.01)  # Very fast cycle
-
-    print("LED functions tested.")
-
-if __name__ == "__main__":
+def test_all_led_functions():
+    cycle_count = 0
     try:
-        test_led_functions()
+        while True:
+            cycle_count += 1
+            print(f"Cycle {cycle_count}")
+
+            # Single LED effects
+            for meditation in [20, 35, 55, 75, 85]:
+                apply_gradient_effect(meditation)
+                time.sleep(2)
+
+            # Dual LED effects
+            for meditation in [20, 35, 55, 75, 85]:
+                apply_gradient_effect_headset1(meditation)
+                apply_gradient_effect_headset2(meditation)
+                time.sleep(2)
+
+            # Rainbow cycle
+            rainbow_cycle(0.001)
+
+            # On every 15th cycle, do a long rainbow cycle with GPIO sequence
+            if cycle_count % 15 == 0:
+                print("15th cycle: Long rainbow cycle with GPIO sequence")
+                for _ in range(3):  # Longer rainbow cycle
+                    rainbow_cycle(0.01)  # Slower speed for longer cycle
+                gpio_sequence()
+
     except KeyboardInterrupt:
         pixels.fill((0, 0, 0, 0))
         pixels.show()
-        print("LED test script terminated.")
+        GPIO.cleanup()
+        print("LED test script terminated and GPIO cleaned up.")
+
+if __name__ == "__main__":
+    test_all_led_functions()
