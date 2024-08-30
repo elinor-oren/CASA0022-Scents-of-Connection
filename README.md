@@ -47,7 +47,7 @@ Follow this [Hardware Tutorial](https://frontiernerds.com/brain-hack) for modify
 ### Pinout Diagram  
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/09533962-a25a-4786-bbec-89ba633fe305">
 
-Be sure to extend the wires on the Ultrasonic Atomizer, and solder a wire across the button to toggle on. 
+Be sure to extend the wires on the Ultrasonic Atomizer and solder a wire across the button to toggle on. 
 
 The 1k ohm resistor is connected between the gate of the MOSFET and ground and acts as a pull-down resistor. It ensures that the MOSFET gate is pulled to a known low state (0V) when the digital pin is not actively driving it. 
 
