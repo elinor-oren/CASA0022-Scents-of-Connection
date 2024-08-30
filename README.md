@@ -1,10 +1,10 @@
 # Scents of Connection 
+This research project explores the intersection of mindfulness, olfaction, and interpersonal neural synchronization (INS) using an adapted EEG headset and a custom-built diffuser device. This repository contains the code, designs, and data necessary to reproduce the study.
 
 
 <img width="340" alt="image" src="https://github.com/user-attachments/assets/05eb9e95-22e4-46cc-80e3-f44aa842a445">
 <img width="270" alt="image" src="https://github.com/user-attachments/assets/93e50bf4-4f4c-4227-a463-79ce3e7627f7">
 
-This research project explores the intersection of mindfulness, olfaction, and interpersonal neural synchronization (INS) using an adapted EEG headset and a custom-built diffuser device. This repository contains the code, designs, and data necessary to reproduce the study.
 
 
 ## Research Objectives 
