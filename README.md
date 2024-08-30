@@ -29,9 +29,11 @@ Optional (required for the visualizer): controlP5 Processing GUI Library (downlo
 
 ## Pinout Diagram + Schematic 
 ![IMG_8371](https://github.com/user-attachments/assets/beddaf97-7282-4afb-b4e8-a6c367a4bd16)
+<img width="790" alt="image" src="https://github.com/user-attachments/assets/09533962-a25a-4786-bbec-89ba633fe305">
 
 
-<img width="998" alt="rhino mock-up" src="https://github.com/user-attachments/assets/76588905-08d9-483c-a3fc-3ec6f3cebd6f">
+
+<img width="800" alt="rhino mock-up" src="https://github.com/user-attachments/assets/76588905-08d9-483c-a3fc-3ec6f3cebd6f">
 
 ### Components Needed
 - Raspberry Pi 3
