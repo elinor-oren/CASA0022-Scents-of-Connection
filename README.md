@@ -26,7 +26,7 @@ This research project explores the intersection of mindfulness, olfaction, and i
 - [Flexible LED strip](https://shop.pimoroni.com/products/flexible-rgbw-led-strip-neopixel-ws2812-sk6812-compatible?variant=30260032733267)
 - [Ultrasonic Mist Maker](https://www.amazon.co.uk/dp/B0CY2FSGDD?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - [MOSFET](https://cdn.sparkfun.com/datasheets/Components/General/FQP30N06L.pdf)
-- Piezoelectric Ultrasonic Disk
+- [Piezoelectric Ultrasonic Atomiser](https://www.amazon.co.uk/dp/B0CY2FSGDD?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - 1K ohm Resistor 
 - Power Supply (matching the voltage requirement of the piezoelectric disk)
 - Breadboard and Wires
