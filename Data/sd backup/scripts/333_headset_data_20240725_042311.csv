@@ -1,0 +1,5 @@
+Timestamp,Participant,Headset,Signal Strength,Attention,Meditation,Delta,Theta,Low Alpha,High Alpha,Low Beta,High Beta,Low Gamma,High Gamma,Very High Time,Very High Duration
+2024-07-25 04:23:16.868545,333,0,21,53,192610,122016,8813,5019,1174,499,264,1777
+2024-07-25 04:23:18.858613,333,0,43,50,265715,32451,19077,5536,2557,1925,328,2066
+2024-07-25 04:23:19.853043,333,0,50,44,504243,28982,3567,5837,3926,973,284,2546
+2024-07-25 04:23:19.853635,333,Experiment,Started
