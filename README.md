@@ -86,6 +86,8 @@ Update your information and test the MQTT connection using the Headset1.ino and 
 
 I would like to thank my dissertation supervisors, Leah Lovett and Andy Hudson-Smith, for their guidance and support. Special thanks to Stephen Grey, Duncan Wilson, Simon Gosling, and Aude Vuilliomenet for their assistance with prototyping, device assembly, and schematic reviews. Lastly, I extend my gratitude to my CASA peers who participated in the study.
 
+My script refinement was partially assisted by ChatGPT-4, an AI language model developed by OpenAI. 
+
 
 
 
