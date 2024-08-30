@@ -26,13 +26,15 @@ Use the [Arduino Brain Library](https://github.com/kitschpatrol/Brain) to captur
 Optional: Processing Brain Visualizer (download here, it might help to have Processing as well)
 
 ## Headset Guide 
-[Hardware Tutorial](https://frontiernerds.com/brain-hack)
+Follow this [Hardware Tutorial](https://frontiernerds.com/brain-hack) - it's as simple as putting the batteries in, unscrewing a panel, and soldering two leads. 
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/b0a89b63-d8c0-4972-a707-ffe83aa565f5">
+
 
 ## Diffuser Guide
 ### Pinout Diagram  
 <img width="800" alt="image" src="https://github.com/user-attachments/assets/09533962-a25a-4786-bbec-89ba633fe305">
 
-I extended the wires on the Ultrasonic Atomizer, and I connected them to the power pins. 
+Extended the wires on the Ultrasonic Atomizer, and solder a wire across the button to ensure it is always on. Connect them to the power pins.
 
 The 1k ohm resistor is connected between the gate of the MOSFET and ground and acts as a pull-down resistor. It ensures that the MOSFET gate is pulled to a known low state (0V) when the digital pin is not actively driving it. 
 
