@@ -1,4 +1,4 @@
-# Exploring Mindfulness, Olfaction, and Interpersonal Neural Synchronization (INS)
+# Scents of Connection: Exploring Mindfulness, Olfaction, and Interpersonal Neural Synchronization (INS)
 The Scents of Connection project aims to explore how olfactory stimuli can enhance mindfulness practices and foster interpersonal neural synchronization (INS). By integrating an EEG headset with a tabletop diffuser, the device releases a scent when users achieve a heightened meditative state, either individually or in pairs. This repository provides the materials needed to build the device, run the experiments, and analyze the data.
 
 <img width="340" alt="image" src="https://github.com/user-attachments/assets/05eb9e95-22e4-46cc-80e3-f44aa842a445">
