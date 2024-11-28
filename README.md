@@ -7,9 +7,9 @@ The Scents of Connection project aims to explore how olfactory stimuli can enhan
 
 
 ## Research Objectives 
-Objective 1: Develop and evaluate a meditation device that utilizes spontaneous breathing to induce a meditative state.
-Objective 2: Compare the effectiveness of solitary versus joint meditation practices and assess the influence of olfactory stimuli on these practices.
-Objective 3: Explore how olfactory stimuli can enhance emotional reflection and interpersonal connection during meditation.
+- Objective 1: Develop and evaluate a meditation device that utilizes spontaneous breathing to induce a meditative state.
+- Objective 2: Compare the effectiveness of solitary versus joint meditation practices and assess the influence of olfactory stimuli on these practices.
+- Objective 3: Explore how olfactory stimuli can enhance emotional reflection and interpersonal connection during meditation.
 
 ## Components required:
 
