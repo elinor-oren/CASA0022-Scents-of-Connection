@@ -51,7 +51,12 @@ Be sure to extend the wires on the Ultrasonic Atomizer and solder a wire across 
 The 1k ohm resistor is connected between the gate of the MOSFET and ground and acts as a pull-down resistor. It ensures that the MOSFET gate is pulled to a known low state (0V) when the digital pin is not actively driving it. 
 
 ### 3D Model 
-<img width="800" alt="rhino mock-up" src="https://github.com/user-attachments/assets/76588905-08d9-483c-a3fc-3ec6f3cebd6f">
+<img width="600" alt="rhino mock-up" src="https://github.com/user-attachments/assets/76588905-08d9-483c-a3fc-3ec6f3cebd6f"> 
+
+See below for the anatomy and measurements. 
+
+<img width="600" alt="dimensions" src="https://github.com/user-attachments/assets/a34f57e3-e1a8-4480-bd4a-01807d40185b">
+
 
 ### Setting up the Raspberry Pi 
 Follow [this](https://www.tomshardware.com/reviews/raspberry-pi-headless-setup-how-to,6028.html) tutorial to set up your Raspberry Pi. 
@@ -64,6 +69,10 @@ Update your information and test the MQTT connection using the Headset1.ino and 
 1. Power Up the System: Ensure that all components are connected and powered on.
 2. Connect to the MQTT Broker: Make sure the Raspberry Pi is connected to the same network as the ESP32 microcontrollers and can receive data via MQTT.
 3. Initialize the Diffuser and LEDs: Run the test scripts on the Raspberry Pi. To test the LEDs before you have the headsets running, use the fake_mqtt_data.ino in the archived foler.
+
+### LED Display Guide 
+<img width="1200" alt="led guide" src="https://github.com/user-attachments/assets/5aab0873-9d2d-4777-837b-61e605cb2a47">
+
 
 ### Running Experiments
 #### Individual Meditation Study
