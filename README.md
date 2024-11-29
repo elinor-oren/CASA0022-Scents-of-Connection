@@ -73,6 +73,8 @@ Update your information and test the MQTT connection using the Headset1.ino and 
 ### LED Display Guide 
 <img width="1200" alt="led guide" src="https://github.com/user-attachments/assets/5aab0873-9d2d-4777-837b-61e605cb2a47">
 
+#### Condition 3 Demo Video 
+
 
 ### Running Experiments
 #### Individual Meditation Study
