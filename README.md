@@ -75,6 +75,8 @@ Update your information and test the MQTT connection using the Headset1.ino and 
 
 #### Condition 3 Demo Video 
 
+https://github.com/user-attachments/assets/8959df42-6013-429b-adb0-a32b9cf538da
+
 
 ### Running Experiments
 #### Individual Meditation Study
