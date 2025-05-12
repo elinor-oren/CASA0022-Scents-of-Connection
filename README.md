@@ -85,6 +85,8 @@ https://github.com/user-attachments/assets/8959df42-6013-429b-adb0-a32b9cf538da
 2. Run the script single_headset_csv.py on the Raspberry Pi and provide the participant number to begin data collection.
 3. The LEDs will provide real-time feedback as the participant reaches different meditative states. Once a "Very High" state is achieved, the diffuser will release the scent.
 
+https://github.com/user-attachments/assets/7735565b-c18b-4831-b6f8-da870decdd92
+
 #### Paired Meditation Study
 
 1. Set up both participants with their respective EEG headsets.
